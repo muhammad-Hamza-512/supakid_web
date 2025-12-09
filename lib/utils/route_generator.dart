@@ -13,9 +13,6 @@ class RouteGenerator {
       GetPage(name: kAllPlansRoute, page: () =>  const  AllPlansScreen(),binding: ScreenBindings()),
       GetPage(name: kPaymentSummaryRoute, page: () =>  const  PaymentSummaryScreen(), binding:ScreenBindings()),
 
-
-
-
     ];
   }
 }

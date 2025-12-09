@@ -10,23 +10,12 @@ class SubscriptionServices {
   Future<dynamic> allPlans() async {
     return await req.get('${Configs.baseUrl}/api/getAllPlans',);
   }
-//Create setup intent
-  Future<dynamic> createIntent(data) async {
-    return await req.post('${Configs.baseUrl}/api/createCustomerAndSetupIntent', data);
-  }
-//Create subscription
-  Future<dynamic> subscription(data) async {
-    return await req.post('${Configs.baseUrl}/api/createSubscription',data);
+
+  //Create Subscription
+  Future<dynamic> createCheckoutSession(data) async {
+    return await req.post('${Configs.baseUrl}/api/createCheckoutSession', data);
   }
 
-// //Get Current subscription
-//   Future<dynamic> currentSubscription(data) async {
-//     return await req.getReq('${Configs.baseUrl}/api/getCurrentSubscription', data);
-//   }
-// //Get billing history
-//   Future<dynamic> billingHistory(data) async {
-//     return await req.getReq('${Configs.baseUrl}/api/getBillingHistory', data);
-//   }
 //Cancel Subscription
   Future<dynamic> cancelSubscription(data) async {
     return await req.post('${Configs.baseUrl}/api/cancelSubscription', data);

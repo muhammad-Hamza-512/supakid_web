@@ -111,7 +111,6 @@ class AllPlansScreen extends GetView<SubscriptionController> {
                     } else {
                       Get.toNamed(kPaymentSummaryRoute, arguments: {
                         'selectedPlan': controller.selectedPlan.value,
-                        // 'subscriptionData': Get.arguments['data'],
                       });
                     }
                   },
