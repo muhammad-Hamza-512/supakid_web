@@ -5,6 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../custom_widgets/custom_button.dart';
 import '../custom_widgets/feature_items.dart';
 import '../custom_widgets/loading.dart';
+import '../services/storage.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_images.dart';
 import '../utils/app_strings.dart';
@@ -54,14 +55,35 @@ class AllPlansScreen extends GetView<SubscriptionController> {
                             : controller.plans[index];
                         String planName = data['planName'] ?? '';
                         var planDetails = data['planDetails'] ?? {};
-                        bool isSelected = controller.selectedPlan.value == data;
+                        final selected = controller.selectedPlan.value;
+                        final selectedPlanId = selected?['planDetails']?['planId'];
+                        final currentPlanId = data['planDetails']?['planId'];
+
+                        bool isSelected = selectedPlanId != null &&
+                            selectedPlanId == currentPlanId;
+
+                        // bool isSelected = controller.selectedPlan.value == data;
 
                         return GestureDetector(
                           onTap: isLoading
                               ? null
-                              : () {
-                            controller.selectedPlan.value = isSelected ? null : data;
+                              : () async {
+                            if (isSelected) {
+                              controller.selectedPlan.value = null;
+                              await Storage.clearSelectedPlan();
+                            } else {
+                              controller.selectedPlan.value = data;
+
+
+                              await Storage.setSelectedPlan(data);
+                            }
                           },
+
+                          // onTap: isLoading
+                          //     ? null
+                          //     : () {
+                          //   controller.selectedPlan.value = isSelected ? null : data;
+                          // },
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 400),
                             decoration: BoxDecoration(
@@ -92,8 +114,7 @@ class AllPlansScreen extends GetView<SubscriptionController> {
                                 const FeatureItem(icon: Icons.history, text: "View activity history"),
                                 const FeatureItem(icon: Icons.notifications, text: "Usage alerts and notifications"),
                                 Text((planDetails['interval'] == 'year' ? " +2 months free" : ""),style:
-                                  AppStyles.interStyle(kWhiteColor, 18, FontWeight.bold)
-                                  ,),
+                                  AppStyles.interStyle(kWhiteColor, 18, FontWeight.bold),),
                               ],
                             ),
                           ),
@@ -109,9 +130,9 @@ class AllPlansScreen extends GetView<SubscriptionController> {
                     if (controller.selectedPlan.value == null) {
                      showToast(context, msg: "Please select a plan before proceeding.");
                     } else {
-                      Get.toNamed(kPaymentSummaryRoute, arguments: {
-                        'selectedPlan': controller.selectedPlan.value,
-                      });
+                      Get.toNamed(kPaymentSummaryRoute,
+                        arguments: controller.selectedPlan.value,
+                      );
                     }
                   },
                   padding: 0,

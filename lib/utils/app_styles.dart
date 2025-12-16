@@ -7,7 +7,8 @@ class AppStyles {
   static TextStyle interStyle(Color color,double fontSize, FontWeight fontWeight) => GoogleFonts.inter(
     fontSize: fontSize.sp,
     fontWeight: fontWeight,
-    color: color,);
+    color: color,
+  );
 
   static BorderRadius get customBorderAll4 => BorderRadius.all(
     Radius.circular(4.h),
@@ -24,9 +25,7 @@ class AppStyles {
     Radius.circular(100.h),
   );
 
-
-
-  static double   mainP = 15.0;
+  static double  mainP = 15.0;
   static double p = 10.0;
   static double r = 5.0;
   static double b = 20.0;

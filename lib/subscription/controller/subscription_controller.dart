@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -5,6 +6,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../services/subscription_services.dart';
 import '../../custom_widgets/loading.dart';
+import '../../services/storage.dart';
 
 
 class SubscriptionController extends GetxController {
@@ -19,7 +21,7 @@ class SubscriptionController extends GetxController {
     try {
       isLoading.value = true;
       final response = await subscriptionServices.allPlans();
-      // print("API Response: $response");
+      print("API Response: $response");
       if (response != null && response['plans'] != null) {
         final plansData = response['plans'];
         List<Map<String, dynamic>> plansList = [];
@@ -41,9 +43,23 @@ class SubscriptionController extends GetxController {
     }
   }
 
+   saveTokenFromUrlIfExists() async {
+     log("FUnction is going on--------");
+
+    final uri = Uri.base;
+    // final token = uri.queryParameters['token'];
+     final token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE3LCJpYXQiOjE3NjU4OTAwODIsImV4cCI6MTc2NTg5MTg4Mn0.4jamJtQBF4XwSZrSVxWwjH5I3lYxAR92JpLp6LwIOK0";
+
+    if (token != null && token.isNotEmpty) {
+      await Storage.setToken(token);
+      log("Web token saved: $token");
+    } else {
+      log("No token found in URL.");
+    }
+  }
+
   startCheckout(String priceId) async {
     isLoading1.value = true;
-
     try {
       var data = {
         "priceId": priceId,
@@ -64,23 +80,46 @@ class SubscriptionController extends GetxController {
           throw "Could not launch Stripe checkout URL";
         }
       } else {
-        showToast(Get.context!, msg: "Failed to create checkout session");
+        showToast(Get.overlayContext!, msg: "Failed to create checkout session");
       }
     } catch (e) {
       print("Checkout error: $e");
-      showToast(Get.context!, msg: "Something went wrong.");
+      showToast(Get.overlayContext!, msg: "Something went wrong.");
     } finally {
       isLoading1.value = false;
     }
   }
+  Future<void> restoreSelectedPlan() async {
+    if (selectedPlan.value != null) return;
 
-
+    final storedPlan = await Storage.getSelectedPlan();
+    if (storedPlan != null) {
+      selectedPlan.value = storedPlan;
+      log("Selected plan restored from storage");
+    }
+  }
 
   @override
   void onInit() {
-    fetchPlans();
     super.onInit();
+    _init();
   }
+
+  Future<void> _init() async {
+    await fetchPlans();
+    await restoreSelectedPlan();
+    saveTokenFromUrlIfExists();
+  }
+
+
+
+// @override
+  // void onInit() {
+  //   fetchPlans();
+  //   restoreSelectedPlan();
+  //   saveTokenFromUrlIfExists();
+  //   super.onInit();
+  // }
 
 
 

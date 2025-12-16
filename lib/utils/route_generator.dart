@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:supakid_web/subscription/payment_success_screen.dart';
 import 'package:supakid_web/utils/screen_bindings.dart';
 
 import '../subscription/all_plans_screen.dart';
@@ -12,9 +13,7 @@ class RouteGenerator {
 
       GetPage(name: kAllPlansRoute, page: () =>  const  AllPlansScreen(),binding: ScreenBindings()),
       GetPage(name: kPaymentSummaryRoute, page: () =>  const  PaymentSummaryScreen(), binding:ScreenBindings()),
-
-
-
+      GetPage(name: kPaymentSuccessRoute, page: () =>  const  PaymentSuccessScreen(), binding:ScreenBindings()),
 
     ];
   }

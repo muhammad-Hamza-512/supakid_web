@@ -55,5 +55,22 @@ class Storage {
     final value = await storage.read(key: 'loginTimestamp');
     if (value == null) return null; return int.tryParse(value); }
 
+  static Future<void> setSelectedPlan(Map<String, dynamic> plan) async {
+    await storage.write(
+      key: 'selectedPlan',
+      value: jsonEncode(plan),
+    );
+  }
+
+  static Future<Map<String, dynamic>?> getSelectedPlan() async {
+    final value = await storage.read(key: 'selectedPlan');
+    if (value == null) return null;
+    return jsonDecode(value);
+  }
+
+  static Future<void> clearSelectedPlan() async {
+    await storage.delete(key: 'selectedPlan');
+  }
+
 }
 

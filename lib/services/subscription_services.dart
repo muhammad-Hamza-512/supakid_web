@@ -6,7 +6,7 @@ import 'configs.dart';
 class SubscriptionServices {
   var req = Req();
 
-//Get plans from stripe
+  //Get plans from stripe
   Future<dynamic> allPlans() async {
     return await req.get('${Configs.baseUrl}/api/getAllPlans',);
   }
@@ -16,7 +16,7 @@ class SubscriptionServices {
     return await req.post('${Configs.baseUrl}/api/createCheckoutSession', data);
   }
 
-//Cancel Subscription
+ //Cancel Subscription
   Future<dynamic> cancelSubscription(data) async {
     return await req.post('${Configs.baseUrl}/api/cancelSubscription', data);
   }
