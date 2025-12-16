@@ -86,7 +86,7 @@ class PaymentSummaryScreen extends GetView<SubscriptionController> {
               ),
               const Spacer(),
               CustomButton(text: "Pay Now", onPressed: (){
-                controller.startCheckout(selectedPlan['planId']);
+                controller.startCheckout(selectedPlan['planId'].toString());
               },
                 isLoading: controller.isLoading1.value,
                 showIcon: false,
