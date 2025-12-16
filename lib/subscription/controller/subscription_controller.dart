@@ -47,8 +47,8 @@ class SubscriptionController extends GetxController {
      log("FUnction is going on--------");
 
     final uri = Uri.base;
-    // final token = uri.queryParameters['token'];
-     final token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE3LCJpYXQiOjE3NjU4OTAwODIsImV4cCI6MTc2NTg5MTg4Mn0.4jamJtQBF4XwSZrSVxWwjH5I3lYxAR92JpLp6LwIOK0";
+    final token = uri.queryParameters['token'];
+    //  final token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE3LCJpYXQiOjE3NjU4OTAwODIsImV4cCI6MTc2NTg5MTg4Mn0.4jamJtQBF4XwSZrSVxWwjH5I3lYxAR92JpLp6LwIOK0";
 
     if (token != null && token.isNotEmpty) {
       await Storage.setToken(token);
